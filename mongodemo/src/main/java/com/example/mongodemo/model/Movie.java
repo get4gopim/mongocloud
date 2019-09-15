@@ -3,24 +3,36 @@ package com.example.mongodemo.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "movies")
+@Document(collection = "doc_movies")
 public class Movie {
 	
 	@Id
 	private String id;
-	private String name;
-	private String releaseYear;
-	private String actor;
+	
+	private String title;
+	
+	private String type;
+	
+	private boolean isAvailable;
+	
+	private String actorName;
+	
+	private String actressName;
+	
+	private String musicDirector;
+	
+	private String flimDirector;
+	
+	private String imageUrl;
+	
+	private long releaseDate;
+	
+	private int releaseYear;
+	
+	private String language;
 	
 	public Movie() {
 		
-	}
-
-	public Movie(String name, String releaseYear, String actor) {
-		super();
-		this.name = name;
-		this.releaseYear = releaseYear;
-		this.actor = actor;
 	}
 
 	public String getId() {
@@ -31,28 +43,92 @@ public class Movie {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getReleaseYear() {
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+	public String getActorName() {
+		return actorName;
+	}
+
+	public void setActorName(String actorName) {
+		this.actorName = actorName;
+	}
+
+	public String getActressName() {
+		return actressName;
+	}
+
+	public void setActressName(String actressName) {
+		this.actressName = actressName;
+	}
+
+	public String getMusicDirector() {
+		return musicDirector;
+	}
+
+	public void setMusicDirector(String musicDirector) {
+		this.musicDirector = musicDirector;
+	}
+
+	public String getFlimDirector() {
+		return flimDirector;
+	}
+
+	public void setFlimDirector(String flimDirector) {
+		this.flimDirector = flimDirector;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public long getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(long releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public int getReleaseYear() {
 		return releaseYear;
 	}
 
-	public void setReleaseYear(String releaseYear) {
+	public void setReleaseYear(int releaseYear) {
 		this.releaseYear = releaseYear;
 	}
 
-	public String getActor() {
-		return actor;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setActor(String actor) {
-		this.actor = actor;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 }
