@@ -1,8 +1,11 @@
 ---
 applications:
 - name: mongodemo
+  path: ./target/mongodemo-0.0.1-SNAPSHOT.jar
   memory: 1024M
   instances: 1
-  random-route: true
-  buildpacks:
-  - https://github.com/cloudfoundry/java-buildpack.git
+  buildpacks: 
+    - https://github.com/cloudfoundry/java-buildpack.git
+  routes:
+    - route: mongomovie.cfapps.io
+  #no-route: true
