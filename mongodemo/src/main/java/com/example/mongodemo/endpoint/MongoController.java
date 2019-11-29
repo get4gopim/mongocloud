@@ -3,6 +3,7 @@ package com.example.mongodemo.endpoint;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class MongoController {
 	@GetMapping("/movies")
 	public List<Movie> getAllMovies(@RequestHeader(name = "X-Start-Year", required = false, defaultValue = "2019") int startYear, 
 			@RequestHeader(name = "X-End-Year", required = false, defaultValue = "2019") int endYear) {
-		return repository.getByReleaseYear(startYear, endYear);
+		return repository.getByReleaseYear(startYear, endYear, new Sort(Sort.Direction.DESC, "releaseYear"));
 	}
 	
 	@GetMapping("/hello/{name}")
