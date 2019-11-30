@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movie Wiki!</title>
+    <link rel="stylesheet" th:href="@{/css/bulma.css}" >
+    
+    <script src="https://kit.fontawesome.com/81e4f4ee55.js" crossorigin="anonymous"></script>
+    
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+
+<div class="container is-fluid">
+  
+  <!-- <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Movie Database
+      </h1>
+      <p class="subtitle">
+        Search Movies by <strong>Year</strong>!
+      </p>
+    </div>
+  </section> -->
+  
+	<nav class="level is-mobile">
+	  <div class="level-item has-text-centered">
+	    <div>
+	      <p class="heading">Name</p>
+	      <p class="title"><span th:text="${movieItem.title}"></span></p>
+	    </div>
+	  </div>
+	  <div class="level-item has-text-centered">
+	    <div>
+	      <p class="heading">Release Year</p>
+	      <p class="title"><span th:text="${movieItem.releaseYear}"></span></p>
+	    </div>
+	  </div>
+	  <div class="level-item has-text-centered">
+	    <div>
+	      <p class="heading">Language</p>
+	      <p class="title"><span th:text="${movieItem.language}"></span></p>
+	    </div>
+	  </div>
+	  <!-- <div class="level-item has-text-centered">
+	    <div>
+	      <p class="heading">Director</p>
+	      <p class="title"><span th:text="${movieItem.type}"></span></p>
+	    </div>
+	  </div> -->
+	</nav>
+
+<div class="columns is-mobile is-centered">
+
+
+	<div class="column is-three-quarters">
+		<div class="box">
+		
+			<form action="#" th:action="@{/add}" th:object="${movieItem}" method="post">
+				
+				<input class="input is-success" type="hidden" placeholder="id" th:field="*{id}" >
+				
+				<div class="field">
+				  <label class="label">Language</label>
+				  <div class="control has-icons-left has-icons-right">
+				    <input class="input is-success" type="text" placeholder="Language" th:field="*{language}" >
+				    <span class="icon is-small is-left">
+				      <i class="fas fa-language"></i>
+				    </span>
+				    <!-- <span class="icon is-small is-right">
+				      <i class="fas fa-check"></i>
+				    </span> -->
+				  </div>
+				</div>
+				
+				<div class="field">
+				  <label class="label">Actor</label>
+				  <div class="control has-icons-left has-icons-right">
+				    <input class="input is-success" type="text" placeholder="Actor" th:field="*{actorName}" >
+				    <span class="icon is-small is-left">
+				      <i class="fas fa-male"></i>
+				    </span>
+				  </div>
+				</div>
+				
+				<div class="field">
+				  <label class="label">Actress</label>
+				  <div class="control has-icons-left has-icons-right">
+				    <input class="input" type="text" placeholder="Actress" th:field="*{actressName}" >
+				    <span class="icon is-small is-left">
+				      <i class="fas fa-female"></i>
+				    </span>
+				  </div>
+				</div>
+				
+				<div class="field">
+				  <label class="label">Music Composer</label>
+				  <div class="control has-icons-left has-icons-right">
+				    <input class="input" type="text" placeholder="Music Director" th:field="*{musicDirector}" >
+				    <span class="icon is-small is-left">
+				      <i class="fas fa-music"></i>
+				    </span>
+				  </div>
+				</div>
+				
+				<div class="field">
+				  <label class="label">Director</label>
+				  <div class="control has-icons-left has-icons-right">
+				    <input class="input is-success" type="text" placeholder="Flim Director" th:field="*{flimDirector}" >
+				    <span class="icon is-small is-left">
+				      <i class="fas fa-video" aria-hidden="true"></i>
+				    </span>
+				  </div>
+				</div>
+				
+				<!-- <div class="field">
+				  <label class="label">Release Year</label>
+				  <div class="control">
+				  	<label class="label" th:text="*{releaseYear}">Music</label>
+				  </div>
+				</div> -->
+				
+				<!-- <div class="field">
+				  <label class="label">Subject</label>
+				  <div class="control">
+				    <div class="select">
+				      <select>
+				        <option>Select dropdown</option>
+				        <option>With options</option>
+				      </select>
+				    </div>
+				  </div>
+				</div> -->
+				
+				<!-- <div class="field">
+				  <label class="label">Message</label>
+				  <div class="control">
+				    <textarea class="textarea" placeholder="Textarea"></textarea>
+				  </div>
+				</div>
+				
+				<div class="field">
+				  <div class="control">
+				    <label class="checkbox">
+				      <input type="checkbox">
+				      I agree to the <a href="#">terms and conditions</a>
+				    </label>
+				  </div>
+				</div> -->
+				
+				<!-- <div class="field">
+					<label class="label">Is Avilable</label>
+				  <div class="control">
+				    <label class="radio">
+				      <input type="radio" name="question">
+				      Yes
+				    </label>
+				    <label class="radio">
+				      <input type="radio" name="question">
+				      No
+				    </label>
+				  </div>
+				</div> -->
+				
+				<div class="field is-grouped">
+				  <div class="control">
+				    <button type="submit" class="button is-link">Submit</button>
+				  </div>
+				  <div class="control">
+				    <button type="reset" class="button is-link is-light">Cancel</button>
+				  </div>
+				</div>
+			  
+			</form>
+			
+		</div>
+	</div>
+	
+	<div class="column">
+		<div class="box">
+			  <img th:src="*{movieItem.imageUrl}">
+		</div>
+	</div>
+	
+
+</div>
+
+
+<!-- Footer Sections Goes Here -->
+
+	<footer class="footer">
+	  <div class="content has-text-centered">
+	    <p>
+	      <strong>Movie Database </strong> build by <a href="https://twitter.com/get4gopim">get4gopim@gmail.com</a>. Running on
+	      <a href="https://pivotal.io/">Pivotal Cloud</a>. Styled by <a href="https://bulma.io/">Bulma</a>
+	    </p>
+	  </div>
+	</footer>
+	
+  </body>
+</html>

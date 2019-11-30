@@ -131,4 +131,35 @@ public class Movie {
 		this.language = language;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Movie [id=");
+		builder.append(id);
+		builder.append(", title=");
+		builder.append(title);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append(", isAvailable=");
+		builder.append(isAvailable);
+		builder.append(", actorName=");
+		builder.append(actorName);
+		builder.append(", actressName=");
+		builder.append(actressName);
+		builder.append(", musicDirector=");
+		builder.append(musicDirector);
+		builder.append(", flimDirector=");
+		builder.append(flimDirector);
+		builder.append(", imageUrl=");
+		builder.append(imageUrl);
+		builder.append(", releaseDate=");
+		builder.append(releaseDate);
+		builder.append(", releaseYear=");
+		builder.append(releaseYear);
+		builder.append(", language=");
+		builder.append(language);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

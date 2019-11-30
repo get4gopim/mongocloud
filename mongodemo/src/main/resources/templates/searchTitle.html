@@ -27,25 +27,25 @@
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Movies</p>
-	      <p class="title">3,456</p>
+	      <p class="title"><span th:text="${hints.totalMovies}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Actor</p>
-	      <p class="title">123</p>
+	      <p class="title"><span th:text="${hints.uniqueActors}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Language</p>
-	      <p class="title">2</p>
+	      <p class="title"><span th:text="${hints.uniqueLanguages}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Director</p>
-	      <p class="title">789</p>
+	      <p class="title"><span th:text="${hints.uniqueDirectors}"></span></p>
 	    </div>
 	  </div>
 	</nav>
@@ -53,7 +53,7 @@
 <nav class="level">
 
 
-<form action="#" th:action="@{/showByTitle}" th:object="${searchItems}" method="post">
+<form action="#" th:action="@{/showByTitle}" th:object="${searchItems}" method="get">
   
 	<div class="level-right">  
 	  	<div class="level-item">
@@ -96,7 +96,7 @@
 	    </tr>
 	  </thead>
 	 	<tbody>
-	 		<tr th:each="movie : ${movies}">
+	 		<tr th:each="movie : ${page.content}">
 	 			<td><label th:text="${movie.title}"></label></td>
 	 			<td th:text="${movie.actorName}" />
 	 			<td th:text="${movie.actressName}" />
@@ -106,6 +106,32 @@
 	 		</tr>
 	 	</tbody>
 	</table>
+	
+	<nav class="pagination" role="navigation" aria-label="pagination">
+	  <a th:if="${page.hasPrevious()}" 
+	  	th:href="@{/showByTitle(page=${page.number-1},size=${page.size},title=${searchItems.title})}" 
+	  	class="pagination-previous" title="Previous <<">Previous</a>
+	  	
+	  <a th:if="${page.hasNext()}" 
+	  	th:href="@{/showByTitle(page=${page.number+1},size=${page.size},title=${searchItems.title})}"
+	  	class="pagination-next" title="Next >>">Next page</a>
+	 	
+	  <ul class="pagination-list">
+		  <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+		    <li>
+		      <a class="pagination-link is-current" aria-label="Page 1" aria-current="page" 
+		      		th:if="${page.number == i}">[[${i}+1]]</a>
+		    </li>
+		    <li th:unless="${page.number == i}">
+		      <a class="pagination-link" aria-label="page 1" 
+		      		th:href="@{/showByTitle(page=${i},size=${page.size},title=${searchItems.title})}">[[${i}+1]]</a>
+		    </li>
+		  </th:block>
+	  </ul>
+		
+	</nav>
+	
+	<progress class="progress is-success" th:value="${page.number}" th:attr="max=${page.totalPages - 1}"></progress>
 	
 </div>
 

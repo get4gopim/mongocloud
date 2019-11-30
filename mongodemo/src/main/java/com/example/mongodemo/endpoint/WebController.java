@@ -1,12 +1,16 @@
 package com.example.mongodemo.endpoint;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.mongodemo.model.Movie;
 import com.example.mongodemo.model.SearchItems;
 import com.example.mongodemo.repository.MovieRepository;
+import com.example.mongodemo.service.MovieRepoService;
 
 @Controller
 public class WebController {
@@ -27,19 +32,23 @@ public class WebController {
 
 	@Autowired
 	private MovieRepository repository;
+	
+	@Autowired
+	private MovieRepoService service;
 
 	@GetMapping("/")
-	public String startHere(Model model) {
-		int startYear = 2018;
-		int endYear = 2019;
+	public String startHere(Model model, @PageableDefault(size = 10) Pageable pageable, 
+			@RequestParam(value = "startYear", defaultValue = "2018", required = false) int startYear, 
+			@RequestParam(value = "endYear", defaultValue = "2019", required = false) int endYear) {
 
 		LOGGER.info("Search by from: {} to: {}", startYear, endYear);
 		
-		List<Movie> movies = repository.getByReleaseYear(startYear, endYear, new Sort(Sort.Direction.DESC, "releaseYear"));
+		Page<Movie> pages = service.findAllPages(startYear, endYear, pageable);
 
-		model.addAttribute("movies", movies);
+		model.addAttribute("page", pages);
 		model.addAttribute("searchItems", new SearchItems(startYear, endYear));
-
+		model.addAttribute("hints", service.getHints());
+		
 		return "welcome"; // view
 	}
 	
@@ -63,34 +72,63 @@ public class WebController {
 	}
 	
 	@GetMapping("/showByTitle")
-	public String showByTitle(Model model) {
-		String title = "Captain";
+	public String showByTitle(Model model, @PageableDefault(size = 10) Pageable pageable, 
+			@RequestParam(value = "title", defaultValue = "Captain", required = false) String title) {
 
 		LOGGER.info("Search by title: {}", title);
 		
-		List<Movie> movies = repository.findByTitleLike(title);
+		Page<Movie> pages = repository.findByTitleLike(title, pageable);
 
-		model.addAttribute("movies", movies);
+		model.addAttribute("page", pages);
 		model.addAttribute("searchItems", new SearchItems(title));
+		model.addAttribute("hints", service.getHints());
 
 		return "searchTitle"; // view
 	}
 	
-	@PostMapping("/showByTitle")
-	public String searchByTitle(Model model, SearchItems searchItem) {
-		String title = "";
-		if (searchItem != null) {
-			title = searchItem.getTitle();
+	@GetMapping("/editItem")
+	public String editItem(Model model, 
+			@RequestParam(value = "id", required = true) String id) {
+
+		LOGGER.info("Edit by id: {}", id);
+		
+		Movie movie = repository.findByMovieId(id);
+
+		model.addAttribute("movieItem", movie);
+
+		return "add"; // view
+	}
+	
+	@PostMapping("/add")
+	public String saveMovie(Model model, Movie movie) {
+		LOGGER.debug("saveMovie: {}", movie.toString());
+		
+		if (movie.getId() != null) {
+			movie = service.saveMovie(movie);
 		}
 
-		LOGGER.info("Search by title: {}", title);
+		return "redirect:/";
+	}
+	
+	@GetMapping("/delete")
+	public String deleteById(Model model, 
+			@PageableDefault(size = 10) Pageable pageable,
+			@RequestParam(value = "id", required = true) String id,
+			@RequestParam(value = "page", defaultValue = "0", required = false) int pageNumber,
+			@RequestParam(value = "size", defaultValue = "10", required = false) int size,
+			@RequestParam(value = "startYear", defaultValue = "2018", required = false) int startYear, 
+			@RequestParam(value = "endYear", defaultValue = "2019", required = false) int endYear) {
+
+		LOGGER.info("Search by from: {} to: {}", startYear, endYear);
+		LOGGER.info("Delete by id: {}", id);
 		
-		List<Movie> movies = repository.findByTitleLike(title);
+		repository.deleteById(id);
+		
+		String redirectUrl = String.format("page=%d&size=%d&startYear=%d&endYear=%d", pageNumber, size, startYear, endYear);
 
-		model.addAttribute("movies", movies);
-		//model.addAttribute("searchItems", searchItem);
-
-		return "searchTitle"; // view
+		LOGGER.info("redirectUrl: /?{}", redirectUrl);
+		
+		return "redirect:/?" + redirectUrl;
 	}
 
 	@GetMapping("/hello")

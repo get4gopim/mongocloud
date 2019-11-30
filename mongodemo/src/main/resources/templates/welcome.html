@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movie Wiki!</title>
     <link rel="stylesheet" th:href="@{/css/bulma.css}" >
+    
+    <script src="https://kit.fontawesome.com/81e4f4ee55.js" crossorigin="anonymous"></script>
+    
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
@@ -27,46 +30,48 @@
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Movies</p>
-	      <p class="title">3,456</p>
+	      <p class="title"><span th:text="${hints.totalMovies}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Actor</p>
-	      <p class="title">123</p>
+	      <p class="title"><span th:text="${hints.uniqueActors}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Language</p>
-	      <p class="title">2</p>
+	      <p class="title"><span th:text="${hints.uniqueLanguages}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Director</p>
-	      <p class="title">789</p>
+	      <p class="title"><span th:text="${hints.uniqueDirectors}"></span></p>
 	    </div>
 	  </div>
 	</nav>
 	
 <nav class="level">
 
-<form action="#" th:action="@{/}" th:object="${searchItems}" method="post">
+<form action="#" th:action="@{/}" th:object="${searchItems}" method="get">
   
   <!-- Left side -->
   <div class="level-left">
+  
     <div class="level-item">
       <p class="subtitle is-5">
         Year From
       </p>
     </div>
     <div class="level-item">
-      <div class="field has-addons">
-        <p class="control">
-          <input class="input" type="text" th:field="*{startYear}" placeholder="2018">
-        </p>
-      </div>
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" type="text" th:field="*{startYear}" placeholder="2000">
+          	<span class="icon is-small is-left">
+	      		<i class="fa fa-calendar"></i>
+	    	</span>
+        </div>
     </div>
     
     <div class="level-item">
@@ -75,10 +80,16 @@
       </p>
     </div>
     <div class="level-item">
-      <div class="field has-addons">
-        <p class="control">
+        <div class="control has-icons-left has-icons-right">
           <input class="input" type="text" th:field="*{endYear}" placeholder="2019">
-        </p>
+          	<span class="icon is-small is-left">
+	      		<i class="fa fa-calendar"></i>
+	    	</span>
+        </div>
+    </div>
+    
+    <div class="level-item">
+      <div class="field has-addons">
         <p class="control">
           <button class="button">
             Search
@@ -93,38 +104,71 @@
 
   <!-- Right side -->
   <div class="level-right">
+    <p class="level-item"><a href="/showByTitle"><strong>Movies</strong> Search</a></p>
+    <p class="level-item"><strong> | </strong></p>
     <p class="level-item"><a href="/showByTitle"><strong>Title</strong> Search</a></p>
   </div>
-  
-
-
  
 </nav>
 
+<div class="box">
 	<table class="table is-striped is-narrow is-hoverable is-fullwidth">
 	  <thead>
 	    <tr>
 	      <th>Title</th>
-	      <th>Actor</th>
+	      <!-- <th>Actor</th>
 	      <th>Actress</th>
-	      <th>Music By</th>
+	      <th>Music By</th> -->
 	      <th>Directed By</th>
 	      <th>Year</th>
+	      <th>Delete</th>
 	    </tr>
-	  </thead>
-	 	<tbody>
-	 		<tr th:each="movie : ${movies}">
-	 			<td><label th:text="${movie.title}"></label></td>
-	 			<td th:text="${movie.actorName}" />
-	 			<td th:text="${movie.actressName}" />
-	 			<td th:text="${movie.musicDirector}" />
-	 			<td th:text="${movie.flimDirector}" />
-	 			<td th:text="${movie.releaseYear}" />
+	   </thead>
+	   <tbody>
+	 		<tr th:each="movie : ${page.content}">
+	 			<td><a th:href="@{/editItem(id=${movie.id})}" th:text="${movie.title}"></a></td>
+	 			<!-- <td><span th:text="${movie.actorName}" ></span></td>
+	 			<td><span th:text="${movie.actressName}" ></span></td>
+	 			<td><span th:text="${movie.musicDirector}" ></span></td> -->
+	 			<td><span th:text="${movie.flimDirector}" ></span></td>
+	 			<td><span th:text="${movie.releaseYear}" ></span></td>
+	 			<td><a th:href="@{/delete(id=${movie.id},page=${page.number},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}" th:text="${movie.title}" class="delete is-medium"></a></td>
 	 		</tr>
 	 	</tbody>
 	</table>
 	
+	<progress class="progress is-success" th:value="${page.number}" th:attr="max=${page.totalPages - 1}" >
+		<span th:text="${page.number}">%</span>
+	</progress>
+	
+	<nav class="pagination" role="navigation" aria-label="pagination">
+	  <a th:if="${page.hasPrevious()}" 
+	  	th:href="@{/(page=${page.number-1},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}" 
+	  	class="pagination-previous" title="Previous <<">Previous</a>
+	  	
+	  <a th:if="${page.hasNext()}" 
+	  	th:href="@{/(page=${page.number+1},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}"
+	  	class="pagination-next" title="Next >>">Next page</a>
+	 	
+	  <ul class="pagination-list">
+		  <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+		    <li>
+		      <a class="pagination-link is-current" aria-label="Page 1" aria-current="page" 
+		      		th:if="${page.number == i}">[[${i}+1]]</a>
+		    </li>
+		    <li th:unless="${page.number == i}">
+		      <a class="pagination-link" aria-label="page 1" 
+		      		th:href="@{/(page=${i},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}">[[${i}+1]]</a>
+		    </li>
+		  </th:block>
+	  </ul>
+		
+	</nav>
 </div>
+	
+</div>
+
+
 
 <!-- Footer Sections Goes Here -->
 
