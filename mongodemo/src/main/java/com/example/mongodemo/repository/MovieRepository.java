@@ -1,7 +1,6 @@
 package com.example.mongodemo.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +24,14 @@ public interface MovieRepository extends MongoRepository<Movie, String>, CustomM
 	
 	long count();
 	
-	long countDistinctByActorName();
+	@Query("{'language' : ?0 }")
+	List<String> findDistinctByLanguage(String language);
 	
 	@Query("{'releaseYear' : { $gte: ?0, $lte: ?1 } }")                 
 	Page<Movie> getByReleaseYearPagable(int startYear, int endYear, Pageable pageable);
 	
 	Page<Movie> findByTitleLike(String title, Pageable pageable);
+	
+	@Query("{'language' : ?0 }")
+    List<String> findDistinctLanguage1(String language);
 }

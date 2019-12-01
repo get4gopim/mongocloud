@@ -6,13 +6,17 @@ public class HintGroup {
 	private long uniqueActors;
 	private long uniqueLanguages;
 	private long uniqueDirectors;
+	
+	private long totalEnglishMovies;
+	private long totalTamilMovies;
+	private long totalTeluguMovies;
 
-	public HintGroup(long totalMovies, long uniqueActors, long uniqueLanguages, long uniqueDirectors) {
+	public HintGroup(long totalMovies, long totalEnglishMovies, long totalTamilMovies, long totalTeluguMovies) {
 		super();
 		this.totalMovies = totalMovies;
-		this.uniqueActors = uniqueActors;
-		this.uniqueLanguages = uniqueLanguages;
-		this.uniqueDirectors = uniqueDirectors;
+		this.totalEnglishMovies = totalEnglishMovies;
+		this.totalTamilMovies = totalTamilMovies;
+		this.totalTeluguMovies = totalTeluguMovies;
 	}
 
 	public long getTotalMovies() {
@@ -30,5 +34,19 @@ public class HintGroup {
 	public long getUniqueDirectors() {
 		return uniqueDirectors;
 	}
+
+	public long getTotalEnglishMovies() {
+		return totalEnglishMovies;
+	}
+
+	public long getTotalTamilMovies() {
+		return totalTamilMovies;
+	}
+
+	public long getTotalTeluguMovies() {
+		return totalTeluguMovies;
+	}
+	
+	
 
 }

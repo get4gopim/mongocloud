@@ -1,7 +1,6 @@
 package com.example.mongodemo.endpoint;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,12 +130,19 @@ public class WebController {
 		return "redirect:/?" + redirectUrl;
 	}
 
-	@GetMapping("/hello")
-	public String mainWithParam(@RequestParam(name = "name", required = false, defaultValue = "") String name,
-			Model model) {
+	@GetMapping("/bootview")
+	public String bootView(Model model) {
+		
+		return "bootview"; // view
+	}
+	
+	@GetMapping("/index")
+	public String indexView(Model model) {
+		
+		List<Movie> movies = repository.getByReleaseYear(2018, 2019, new Sort(Sort.Direction.DESC, "releaseYear"));
 
-		model.addAttribute("message", name);
-
+		model.addAttribute("movies", movies);
+		
 		return "index"; // view
 	}
 }

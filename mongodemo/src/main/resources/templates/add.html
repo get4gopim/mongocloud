@@ -36,7 +36,7 @@
 	  <div class="level-item has-text-centered">
 	    <div>
 	      <p class="heading">Release Year</p>
-	      <p class="title"><span th:text="${movieItem.releaseYear}"></span></p>
+	      <p class="title"><a th:href="@{/(id=${movieItem.id},page=0,size=10,startYear=${movieItem.releaseYear},endYear=${movieItem.releaseYear})}" th:text="${movieItem.releaseYear}"></a></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
@@ -56,8 +56,8 @@
 <div class="columns is-mobile is-centered">
 
 
-	<div class="column is-three-quarters">
-		<div class="box">
+	<div class="column is-mobile is-three-quarters">
+		<div class="box is-mobile">
 		
 			<form action="#" th:action="@{/add}" th:object="${movieItem}" method="post">
 				
@@ -179,12 +179,20 @@
 		</div>
 	</div>
 	
-	<div class="column">
-		<div class="box">
-			  <img th:src="*{movieItem.imageUrl}">
+	<div class="column is-mobile">
+		<div class="box is-mobile">
+		  <img th:src="*{movieItem.imageUrl}">
+		  <p>
+		  	<!-- <span th:text="*{movieItem.title + ' is released on ' + movieItem.releaseYear + ' starred by ' + movieItem.actorName + ' and ' + movieItem.actressName} "></span>
+		  	 --><strong> <span class="" th:text="*{movieItem.title}"></span> </strong> is a 
+		  	<strong><span th:text="*{movieItem.releaseYear}"></span></strong>
+		  	<strong><span th:text="*{movieItem.language}"></span></strong> movie based on the 
+		  	<strong><span th:text="*{movieItem.flimDirector}"></span></strong> character starred by 
+		  	<strong><span th:text="*{movieItem.actorName}"></span></strong> and
+		  	<strong><span th:text="*{movieItem.actressName}"></span></strong>
+		  </p>
 		</div>
 	</div>
-	
 
 </div>
 

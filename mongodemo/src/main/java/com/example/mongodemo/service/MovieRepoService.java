@@ -54,11 +54,11 @@ public class MovieRepoService {
 	
 	public HintGroup getHints() {
 		long totalMovies = movieRepository.count();
-		long uniqueActors = 99;
-		long uniqueLanguages = 2;
-		long uniqueDirectors = 240;
+		long totalEnglishMovies = movieRepository.countByLanguage("English");
+		long totalTamilMovies = movieRepository.countByLanguage("Tamil");
+		long totalTeluguMovies = movieRepository.countByLanguage("Telugu");
 		
-		return new HintGroup(totalMovies, uniqueActors, uniqueLanguages, uniqueDirectors);
+		return new HintGroup(totalMovies, totalEnglishMovies, totalTamilMovies, totalTeluguMovies);
 	}
 
 }

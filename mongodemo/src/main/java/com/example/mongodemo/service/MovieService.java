@@ -8,16 +8,17 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.thymeleaf.util.StringUtils;
 
 import com.example.mongodemo.model.Movie;
 import com.example.mongodemo.model.MovieList;
@@ -25,7 +26,7 @@ import com.example.mongodemo.model.MovieList;
 @Component
 public class MovieService {
 	
-	private static final Logger LOGGER = Logger.getLogger(MovieService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MovieService.class);
 	
 	private static final String LOCAL_SAVE_REST_URL = "http://localhost:8080/demo/movies";
 	
@@ -66,12 +67,15 @@ public class MovieService {
 	
 	
 	public MovieList listMovieNames(int tableId, int year, String language) throws Exception {
-		LOGGER.debug("listMovieNames = " + tableId + "; year = " + year);
+		String lang = StringUtils.capitalize(language);
+		String moviesLinkUrl = String.format("https://en.wikipedia.org/wiki/List_of_%s_films_of_%s", lang, year);
 		
-		String moviesLinkUrl = "https://en.wikipedia.org/wiki/" + year + "_in_film";
-		if (language.equalsIgnoreCase("tamil")) {
-			moviesLinkUrl = "https://en.wikipedia.org/wiki/List_of_Tamil_films_of_" + year;
-		}		
+		if (language.equalsIgnoreCase("english")) {
+			moviesLinkUrl = "https://en.wikipedia.org/wiki/" + year + "_in_film";
+		}
+		
+		LOGGER.info("listMovieNames: {}; year: {}; language: {}; moviesLinkUrl: {}", tableId, year, lang, moviesLinkUrl);
+		
 		Document doc = Jsoup.connect(moviesLinkUrl).timeout(5*1000).get();
 		
 		Element table = doc.select("div#mw-content-text table").get(tableId);

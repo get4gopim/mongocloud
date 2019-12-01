@@ -35,25 +35,25 @@
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
-	      <p class="heading">Actor</p>
-	      <p class="title"><span th:text="${hints.uniqueActors}"></span></p>
+	      <p class="heading">English</p>
+	      <p class="title"><span th:text="${hints.totalEnglishMovies}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
-	      <p class="heading">Language</p>
-	      <p class="title"><span th:text="${hints.uniqueLanguages}"></span></p>
+	      <p class="heading">Tamil</p>
+	      <p class="title"><span th:text="${hints.totalTamilMovies}"></span></p>
 	    </div>
 	  </div>
 	  <div class="level-item has-text-centered">
 	    <div>
-	      <p class="heading">Director</p>
-	      <p class="title"><span th:text="${hints.uniqueDirectors}"></span></p>
+	      <p class="heading">Telugu</p>
+	      <p class="title"><span th:text="${hints.totalTeluguMovies}"></span></p>
 	    </div>
 	  </div>
 	</nav>
 	
-<nav class="level">
+<nav class="level is-mobile">
 
 <form action="#" th:action="@{/}" th:object="${searchItems}" method="get">
   
@@ -61,12 +61,12 @@
   <div class="level-left">
   
     <div class="level-item">
-      <p class="subtitle is-5">
+      <p class="subtitle is-6">
         Year From
       </p>
     </div>
     <div class="level-item">
-        <div class="control has-icons-left has-icons-right">
+        <div class="control has-icons-left">
           <input class="input" type="text" th:field="*{startYear}" placeholder="2000">
           	<span class="icon is-small is-left">
 	      		<i class="fa fa-calendar"></i>
@@ -75,12 +75,12 @@
     </div>
     
     <div class="level-item">
-      <p class="subtitle is-5">
-        Year To
+      <p class="subtitle is-6">
+       To
       </p>
     </div>
     <div class="level-item">
-        <div class="control has-icons-left has-icons-right">
+        <div class="control has-icons-left has-addons">
           <input class="input" type="text" th:field="*{endYear}" placeholder="2019">
           	<span class="icon is-small is-left">
 	      		<i class="fa fa-calendar"></i>
