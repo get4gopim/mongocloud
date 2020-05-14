@@ -2,6 +2,9 @@ package com.example.mongodemo.endpoint;
 
 import java.util.List;
 
+import com.example.mongodemo.model.BackerKitNumber;
+import com.example.mongodemo.repository.BackerKitNumberRepository;
+import com.example.mongodemo.service.ExcelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.mongodemo.model.Movie;
 import com.example.mongodemo.model.SearchItems;
@@ -34,6 +35,12 @@ public class WebController {
 	
 	@Autowired
 	private MovieRepoService service;
+
+	@Autowired
+	private BackerKitNumberRepository backerKitNumberRepository;
+
+	@Autowired
+	private ExcelService excelService;
 
 	@GetMapping("/")
 	public String startHere(Model model, @PageableDefault(size = 10) Pageable pageable, 
@@ -144,5 +151,32 @@ public class WebController {
 		model.addAttribute("movies", movies);
 		
 		return "index"; // view
+	}
+
+	@GetMapping("/excel")
+	public String excelView(Model model, @PageableDefault(size = 300) Pageable pageable,
+							@RequestParam(value = "title", defaultValue = "155887", required = false) String backerId) {
+		try {
+			Page<BackerKitNumber> pages = backerKitNumberRepository.findByBackerNumberLike(backerId, pageable);
+
+			LOGGER.debug("Total Elements: {} - {}", pages.getTotalElements(), pages.getNumberOfElements());
+
+			model.addAttribute("page", pages);
+			model.addAttribute("searchItems", new SearchItems(backerId));
+			model.addAttribute("hints", excelService.getHints());
+		} catch (Exception ex) {
+			LOGGER.error("Exception in reading Excel", ex);
+		}
+		return "excel"; // view
+	}
+
+	@GetMapping("/excel/{backerNumber}")
+	public String showGuestList(Model model, @PageableDefault(size = 500) Pageable pageable,
+								@PathVariable("backerNumber") String backerNumber) {
+
+		model.addAttribute("page", backerKitNumberRepository.findByBackerNumberLike(backerNumber, pageable));
+		model.addAttribute("hints", excelService.getHints());
+
+		return "results :: resultsList";
 	}
 }

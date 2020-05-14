@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello PicoPix Max Backers!</title>
+  <link rel="stylesheet" th:href="@{/css/bulma.css}" >
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  <script type="text/javascript">
+    function retrieveGuests() {
+      var url = '/excel';
+
+      if ($('#title').val() != '') {
+          url = url + '/' + $('#title').val();
+      }
+
+      $("#resultsBlock").load(url);
+    }
+
+    $('#title').keypress(function(event){
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            alert('You pressed a "enter" key in textbox');
+        }
+        event.stopPropagation();
+    });
+
+  $(document).keypress(function(event){
+
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if(keycode == '13'){
+          $('#searchButton').trigger('click');
+          //alert('You pressed a "enter" key in somewhere');
+      }
+
+  });
+
+</script>
+
+</head>
+<body>
+
+<div class="container is-fluid">
+
+  <nav class="level is-mobile">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Total Shipments</p>
+        <p class="title"><span th:text="${hints.totalMovies}"></span></p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Last Updated</p>
+        <p class="title">12-May-2020</span></p>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="level">
+
+      <div class="level-right">
+        <div class="level-item">
+          <p class="subtitle is-6">
+            Backer Id
+          </p>
+        </div>
+        <div class="level-item">
+          <div class="field has-addons">
+            <p class="control">
+              <input id="title" class="input" type="text" placeholder="155">
+            </p>
+            <p class="control">
+              <button id="searchButton" class="button" type="button" onclick="retrieveGuests()">
+                Search
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- Right side -->
+    <div class="level-right">
+      <p class="level-item"><a href="/excel"><strong>Backer-Id</strong> Search</a></p>
+      <p class="level-item"><strong> | </strong></p>
+      <p class="level-item"><a href="/excel"><strong>Contribution-Id</strong> Search</a></p>
+    </div>
+
+  </nav>
+
+
+  <!-- Results block -->
+  <div id="resultsBlock">
+
+  </div>
+
+
+
+</div>
+
+<!-- Footer Sections Goes Here -->
+
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>Backers Kit Search </strong> build by <a href="https://twitter.com/get4gopim">get4gopim@gmail.com</a>. Running on
+      <a href="https://pivotal.io/">Pivotal Cloud</a>.
+    </p>
+    <a href="https://bulma.io">
+      <img src="https://bulma.io/images/made-with-bulma.png" alt="Made with Bulma" width="128" height="24">
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>

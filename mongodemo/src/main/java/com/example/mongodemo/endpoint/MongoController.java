@@ -2,6 +2,7 @@ package com.example.mongodemo.endpoint;
 
 import java.util.List;
 
+import com.example.mongodemo.service.ExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ public class MongoController {
 	
 	@Autowired
 	private MovieService service;
+
+	@Autowired
+	private ExcelService excelService;
 
 	@GetMapping("/moviesAll")
 	public List<Movie> getAllMovies() {
@@ -62,6 +66,15 @@ public class MongoController {
 			@RequestHeader(name = "X-Language", required = false, defaultValue = "english") String language) {
 		
 		service.asyncMethodWithVoidReturnType(language, startYear, endYear);
+	}
+
+	@GetMapping("/excel/extract")
+	@ResponseStatus(HttpStatus.OK)
+	public void extractExcelData(@RequestHeader(name = "X-Language", required = false, defaultValue = "Shipment Max Updated.xlsx") String fileName) {
+
+		excelService.readAndSaveAll(fileName);
+
+
 	}
 	
 }

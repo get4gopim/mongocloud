@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello PicoPix Max Backers!</title>
+  <link rel="stylesheet" th:href="@{/css/bulma.css}" >
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+
+</head>
+<body>
+
+
+
+  <div class="table-container" th:fragment="resultsList" th:unless="${#lists.isEmpty(page.content)}" id="results-block">
+
+    <div class="level-item">
+      <p class="subtitle is-6">
+        Items Found: <span th:text="${page.totalElements}"></span>
+      </p>
+    </div>
+
+    <br/>
+
+    <ul>
+      <li style="display: inline-block; zoom:1;" th:each="item : ${page.content}">
+        <span th:text="${item.backerNumber}" />
+      </li>
+    </ul>
+
+    <!--<nav class="pagination" role="navigation" aria-label="pagination">
+      <a th:if="${page.hasPrevious()}"
+         th:href="@{/excel(page=${page.number-1},size=${page.size},title=${searchItems.title})}"
+         class="pagination-previous" title="Previous <<">Previous</a>
+
+      <a th:if="${page.hasNext()}"
+         th:href="@{/excel(page=${page.number+1},size=${page.size},title=${searchItems.title})}"
+         class="pagination-next" title="Next >>">Next page</a>
+
+      <ul class="pagination-list">
+        <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+          <li>
+            <a class="pagination-link is-current" aria-label="Page 1" aria-current="page"
+               th:if="${page.number == i}">[[${i}+1]]</a>
+          </li>
+          <li th:unless="${page.number == i}">
+            <a class="pagination-link" aria-label="page 1"
+               th:href="@{/excel(page=${i},size=${page.size},title=${searchItems.title})}">[[${i}+1]]</a>
+          </li>
+        </th:block>
+      </ul>
+
+    </nav>-->
+
+    <progress class="progress is-success" th:value="${page.number}" th:attr="max=${page.totalPages - 1}"></progress>
+
+  </div>
+
+</body>
+</html>
