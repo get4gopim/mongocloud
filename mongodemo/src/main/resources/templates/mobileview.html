@@ -15,80 +15,53 @@
 
 <div class="container is-mobile">
 
-    <section class="hero is-primary">
+    <!--<section class="hero is-primary">
         <div class="hero-head">
             <div class="container is-fluid">
                 <h2 class="title">
                     <i class="fas fa-film"></i>
                     &nbsp;
                 </h2>
-                <!--<h2 class="subtitle">
+                &lt;!&ndash;<h2 class="subtitle">
                     &nbsp;
-                </h2>-->
+                </h2>&ndash;&gt;
             </div>
         </div>
-    </section>
+    </section>-->
 
     <!-- Header Details -->
 
-    <div class="container is-widescreen">
-
-        <nav class="level is-mobile">
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Movies</p>
-              <p class="title"><span th:text="${hints.totalMovies}"></span></p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">English</p>
-              <p class="title"><span th:text="${hints.totalEnglishMovies}"></span></p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Tamil</p>
-              <p class="title"><span th:text="${hints.totalTamilMovies}"></span></p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Telugu</p>
-              <p class="title"><span th:text="${hints.totalTeluguMovies}"></span></p>
-            </div>
-          </div>
-        </nav>
-
-    </div>
-
-
-    <!-- Search Fields Section -->
-    <!--<section class="section">
+    <section class="section">
         <div class="container is-widescreen">
 
-            <div class="field">
-                &lt;!&ndash;<label class="label">Start Year</label>&ndash;&gt;
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-success" type="text" placeholder="Start Year" value="">
-                    <span class="icon is-small is-left">
-                        <i class="far fa-calendar-alt"></i>
-                    </span>
+            <nav class="level is-mobile">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Movies</p>
+                  <p class="title"><span th:text="${hints.totalMovies}"></span></p>
                 </div>
-            </div>
-
-            <div class="field">
-                &lt;!&ndash;<label class="label">End Year</label>&ndash;&gt;
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-success" type="text" placeholder="End Year" value="">
-                    <span class="icon is-small is-left">
-                        <i class="far fa-calendar-alt"></i>
-                    </span>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">English</p>
+                  <p class="title"><span th:text="${hints.totalEnglishMovies}"></span></p>
                 </div>
-            </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Tamil</p>
+                  <p class="title"><span th:text="${hints.totalTamilMovies}"></span></p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Telugu</p>
+                  <p class="title"><span th:text="${hints.totalTeluguMovies}"></span></p>
+                </div>
+              </div>
+            </nav>
 
         </div>
-    </section>-->
 
     <br/>
 
@@ -118,30 +91,8 @@
         </div>
     </form>
     <!-- Body -->
+    </section>
 
-    <!--<div class="box" th:each="movie : ${page.content}">
-        <article class="media">
-            <div class="media-left">
-                <figure class="image is-64x64">
-                    <img class="is-rounded" th:src="${movie.imageUrl}">
-                </figure>
-            </div>
-            <div class="media-content">
-                <div class="content level is-mobile">
-                    <p>
-                        <strong><span th:text="${movie.title}" ></span></strong> <small>@<span th:text="${movie.releaseYear}" ></span></small>
-                        <br>
-                        <span th:text="${movie.title}" ></span> is a <span th:text="${movie.language}" ></span> flim
-                        written by <span th:text="${movie.flimDirector}" ></span>
-                        Starring <span th:text="${movie.actorName}" > and <span th:text="${movie.actressName}" >
-                        Music scored by <span th:text="${movie.musicDirector}" ></span>.
-                    </p>
-                </div>
-            </div>
-        </article>
-    </div>-->
-
-    <br/>
 
     <progress class="progress is-success" th:value="${page.number+1}" th:attr="max=${page.totalPages}" >
         <span th:text="${page.number}">%</span>
