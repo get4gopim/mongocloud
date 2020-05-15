@@ -148,12 +148,14 @@
     </progress>
 
     <div class="card" th:each="movie : ${page.content}">
+
         <!--<div class="card-image">
             <figure class="image is-4by3">
                 <img th:src="${movie.imageUrl}" alt="Placeholder image">
             </figure>
         </div>-->
         <div class="card-content">
+
             <div class="media">
                 <div class="media-left">
                     <figure class="image is-48x48">
@@ -174,7 +176,22 @@
                 <strong><span th:text="${movie.actressName}" /></strong>
                 Music scored by <strong><span th:text="${movie.musicDirector}" /></strong>.
             </div>
+
         </div>
+
+
+        <footer class="card-footer">
+            <p class="card-footer-item">
+              <span>
+                <a th:href="@{/editMobileView(id=${movie.id})}">Edit</a>
+              </span>
+            </p>
+            <p class="card-footer-item">
+              <span>
+                <a th:href="@{/deleteMobileView(id=${movie.id},page=${page.number},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}">Delete</a>
+              </span>
+            </p>
+        </footer>
 
     </div>
 

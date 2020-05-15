@@ -122,6 +122,30 @@ public class WebController {
 
 		return "add"; // view
 	}
+
+    @GetMapping("/editMobileView")
+    public String editMobileView(Model model,
+                           @RequestParam(value = "id", required = true) String id) {
+
+        LOGGER.info("Edit by id: {}", id);
+
+        Movie movie = repository.findByMovieId(id);
+
+        model.addAttribute("movieItem", movie);
+
+        return "addMobileView"; // view
+    }
+
+    @PostMapping("/addMobileView")
+    public String saveMobileViewMovie(Model model, Movie movie) {
+        LOGGER.debug("saveMovie: {}", movie.toString());
+
+        if (movie.getId() != null) {
+            movie = service.saveMovie(movie);
+        }
+
+        return "redirect:/mobileView";
+    }
 	
 	@PostMapping("/add")
 	public String saveMovie(Model model, Movie movie) {
@@ -154,6 +178,27 @@ public class WebController {
 		
 		return "redirect:/?" + redirectUrl;
 	}
+
+    @GetMapping("/deleteMobileView")
+    public String deleteMobileView(Model model,
+                             @PageableDefault(size = 10) Pageable pageable,
+                             @RequestParam(value = "id", required = true) String id,
+                             @RequestParam(value = "page", defaultValue = "0", required = false) int pageNumber,
+                             @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+                             @RequestParam(value = "startYear", defaultValue = "2018", required = false) int startYear,
+                             @RequestParam(value = "endYear", defaultValue = "2019", required = false) int endYear) {
+
+        LOGGER.info("Search by from: {} to: {}", startYear, endYear);
+        LOGGER.info("Delete by id: {}", id);
+
+        repository.deleteById(id);
+
+        String redirectUrl = String.format("page=%d&size=%d&startYear=%d&endYear=%d", pageNumber, size, startYear, endYear);
+
+        LOGGER.info("redirectUrl: /?{}", redirectUrl);
+
+        return "redirect:/mobileView?" + redirectUrl;
+    }
 
 	@GetMapping("/bootview")
 	public String bootView(Model model) {
