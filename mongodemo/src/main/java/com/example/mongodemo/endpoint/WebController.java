@@ -1,10 +1,12 @@
 package com.example.mongodemo.endpoint;
 
-import java.util.List;
-
 import com.example.mongodemo.model.BackerKitNumber;
+import com.example.mongodemo.model.Movie;
+import com.example.mongodemo.model.SearchItems;
 import com.example.mongodemo.repository.BackerKitNumberRepository;
+import com.example.mongodemo.repository.MovieRepository;
 import com.example.mongodemo.service.ExcelService;
+import com.example.mongodemo.service.MovieRepoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.mongodemo.model.Movie;
-import com.example.mongodemo.model.SearchItems;
-import com.example.mongodemo.repository.MovieRepository;
-import com.example.mongodemo.service.MovieRepoService;
+import java.util.List;
 
 @Controller
 public class WebController {
@@ -41,6 +43,22 @@ public class WebController {
 
 	@Autowired
 	private ExcelService excelService;
+
+    @GetMapping("/mobileView")
+    public String mobileView(Model model, @PageableDefault(size = 10) Pageable pageable,
+                            @RequestParam(value = "startYear", defaultValue = "2017", required = false) int startYear,
+                            @RequestParam(value = "endYear", defaultValue = "2020", required = false) int endYear) {
+
+        LOGGER.debug("Search by from: {} to: {}", startYear, endYear);
+
+        Page<Movie> pages = service.findAllPages(startYear, endYear, pageable);
+
+        model.addAttribute("page", pages);
+        model.addAttribute("searchItems", new SearchItems(startYear, endYear));
+        model.addAttribute("hints", service.getHints());
+
+        return "mobileView"; // view
+    }
 
 	@GetMapping("/")
 	public String startHere(Model model, @PageableDefault(size = 10) Pageable pageable, 
