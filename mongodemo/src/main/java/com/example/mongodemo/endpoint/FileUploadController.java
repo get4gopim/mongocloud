@@ -83,9 +83,13 @@ public class FileUploadController {
     public @ResponseBody String singleFileUpload(@RequestParam("file") MultipartFile file) {
         final String fileName = storageService.uploadFile(file);
 
-        CompletableFuture.supplyAsync(() -> storageService.storeContributionIds(fileName));
+        if (fileName != null) {
+            CompletableFuture.supplyAsync(() -> storageService.storeContributionIds(fileName));
 
-        return "You successfully uploaded "+ fileName;
+            return "You successfully uploaded " + fileName;
+        } else {
+            return "File upload failed " + fileName;
+        }
     }
 
 

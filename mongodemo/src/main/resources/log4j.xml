@@ -16,6 +16,8 @@
 	<logger name="com.example.mongodemo">
 		<level value="debug" />
 	</logger>
+
+
 	
 	<logger name="com.wiki.parser">
 		<level value="info" />
