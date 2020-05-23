@@ -7,5 +7,5 @@ applications:
   buildpacks: 
     - https://github.com/cloudfoundry/java-buildpack.git
   routes:
-    - route: mongomovie.cfapps.io
+    - route: get4gopim.cfapps.io
   #no-route: true

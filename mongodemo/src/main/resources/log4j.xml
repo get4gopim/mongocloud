@@ -17,12 +17,8 @@
 		<level value="debug" />
 	</logger>
 	
-	<logger name="com.example.mongodemo">
-		<level value="debug" />
-	</logger>
-	
 	<logger name="com.wiki.parser">
-		<level value="DEBUG" />
+		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -39,7 +35,7 @@
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<!-- Root Logger -->

@@ -10,189 +10,264 @@
     <script src="https://kit.fontawesome.com/81e4f4ee55.js" crossorigin="anonymous"></script>
     
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+      <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+
+              // Get all "navbar-burger" elements
+              const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+              // Check if there are any navbar burgers
+              if ($navbarBurgers.length > 0) {
+
+                // Add a click event on each of them
+                $navbarBurgers.forEach( el => {
+                  el.addEventListener('click', () => {
+
+                    // Get the target from the "data-target" attribute
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+
+                  });
+                });
+              }
+
+            });
+       </script>
+
+      <script>
+            #nav-toggle-state {
+              display: none;
+            }
+
+            #nav-toggle-state:checked ~ .navbar-menu {
+              display: block;
+            }
+      </script>
+
+
   </head>
-  <body>
 
-<div class="container is-mobile">
+    <body>
 
-    <!--<section class="hero is-primary">
-        <div class="hero-head">
-            <div class="container is-fluid">
-                <h2 class="title">
-                    <i class="fas fa-film"></i>
-                    &nbsp;
-                </h2>
-                &lt;!&ndash;<h2 class="subtitle">
-                    &nbsp;
-                </h2>&ndash;&gt;
-            </div>
-        </div>
-    </section>-->
+    <nav id="nav-toggle" class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
 
-    <!-- Header Details -->
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
 
-    <section class="section">
-        <div class="container is-widescreen">
-
-            <nav class="level is-mobile">
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Movies</p>
-                  <p class="title"><span th:text="${hints.totalMovies}"></span></p>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">English</p>
-                  <p class="title"><span th:text="${hints.totalEnglishMovies}"></span></p>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Tamil</p>
-                  <p class="title"><span th:text="${hints.totalTamilMovies}"></span></p>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Telugu</p>
-                  <p class="title"><span th:text="${hints.totalTeluguMovies}"></span></p>
-                </div>
-              </div>
-            </nav>
-
+            <a class="navbar-item" href="#">
+                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+            </a>
         </div>
 
-    <br/>
+        <div id="navMenu" class="navbar-menu">
 
-    <form action="#" th:action="@{/mobileView}" th:object="${searchItems}" method="get">
-        <div class="field has-addons has-addons-right">
-            <p class="control">
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-success" type="text" th:field="*{startYear}" placeholder="2017" value="">
-                    <span class="icon is-small is-left">
-                            <i class="far fa-calendar-alt"></i>
-                        </span>
+            <div class="navbar-start">
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="/addMobileView">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
                 </div>
-            </p>
-            <p class="control">
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-success" type="text" th:field="*{endYear}" placeholder="2020" value="">
-                    <span class="icon is-small is-left">
-                            <i class="far fa-calendar-alt"></i>
-                        </span>
-                </div>
-            </p>
-            <p class="control">
-                <button class="button">
-                    Go
-                </button>
-            </p>
-        </div>
-    </form>
-    <!-- Body -->
-    </section>
 
-
-    <progress class="progress is-success" th:value="${page.number+1}" th:attr="max=${page.totalPages}" >
-        <span th:text="${page.number}">%</span>
-    </progress>
-
-    <div class="card" th:each="movie : ${page.content}">
-
-        <!--<div class="card-image">
-            <figure class="image is-4by3">
-                <img th:src="${movie.imageUrl}" alt="Placeholder image">
-            </figure>
-        </div>-->
-        <div class="card-content">
-
-            <div class="media">
-                <div class="media-left">
-                    <figure class="image is-48x48">
-                        <img th:src="${movie.imageUrl}" alt="Placeholder image">
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <p class="title is-5"><span th:text="${movie.title}" /></p>
-                    <p class="subtitle is-6">@<span th:text="${movie.releaseYear}" /></p>
-                </div>
-            </div>
-
-            <div class="content">
-                <strong><span th:text="${movie.title}" /></strong> is a <span th:text="${movie.language}" /> flim
-                released in <span th:text="${movie.releaseYear}" />,
-                written by <strong><span th:text="${movie.flimDirector}" /></strong>
-                Starring <strong><span th:text="${movie.actorName}" /></strong> and
-                <strong><span th:text="${movie.actressName}" /></strong>
-                Music scored by <strong><span th:text="${movie.musicDirector}" /></strong>.
             </div>
 
         </div>
-
-
-        <footer class="card-footer">
-            <p class="card-footer-item">
-              <span>
-                <a th:href="@{/editMobileView(id=${movie.id})}">Edit</a>
-              </span>
-            </p>
-            <p class="card-footer-item">
-              <span>
-                <a th:href="@{/deleteMobileView(id=${movie.id},page=${page.number},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}">Delete</a>
-              </span>
-            </p>
-        </footer>
-
-    </div>
-
-    <!-- Pagination -->
-
-    <progress class="progress is-success" th:value="${page.number+1}" th:attr="max=${page.totalPages}" >
-        <span th:text="${page.number}">%</span>
-    </progress>
-
-    <nav class="pagination" role="navigation" aria-label="pagination">
-        <a th:if="${page.hasPrevious()}"
-           th:href="@{/mobileView(page=${page.number-1},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}"
-           class="pagination-previous" title="Previous <<">Previous</a>
-
-        <a th:if="${page.hasNext()}"
-           th:href="@{/mobileView(page=${page.number+1},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}"
-           class="pagination-next" title="Next >>">Next page</a>
-
-       <!-- <ul class="pagination-list">
-            <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
-                <li>
-                    <a class="pagination-link is-current" aria-label="Page 1" aria-current="page"
-                       th:if="${page.number == i}">[[${i}+1]]</a>
-                </li>
-                <li th:unless="${page.number == i}">
-                    <a class="pagination-link" aria-label="page 1"
-                       th:href="@{/mobileView(page=${i},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}">[[${i}+1]]</a>
-                </li>
-            </th:block>
-        </ul>-->
-
     </nav>
 
-</div>
+
+    <!-- Main Content -->
+        <div class="container is-mobile">
+
+            <!--<section class="hero is-primary">
+                <div class="hero-head">
+                    <div class="container is-fluid">
+                        <h2 class="title">
+                            <i class="fas fa-film"></i>
+                            &nbsp;
+                        </h2>
+                        &lt;!&ndash;<h2 class="subtitle">
+                            &nbsp;
+                        </h2>&ndash;&gt;
+                    </div>
+                </div>
+            </section>-->
+
+            <!-- Header Details -->
+
+            <section class="section">
+                <div class="container is-widescreen">
+
+                    <nav class="level is-mobile">
+                      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">Movies</p>
+                          <p class="title"><span th:text="${hints.totalMovies}"></span></p>
+                        </div>
+                      </div>
+                      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">English</p>
+                          <p class="title"><span th:text="${hints.totalEnglishMovies}"></span></p>
+                        </div>
+                      </div>
+                      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">Tamil</p>
+                          <p class="title"><span th:text="${hints.totalTamilMovies}"></span></p>
+                        </div>
+                      </div>
+                      <div class="level-item has-text-centered">
+                        <div>
+                          <p class="heading">Telugu</p>
+                          <p class="title"><span th:text="${hints.totalTeluguMovies}"></span></p>
+                        </div>
+                      </div>
+                    </nav>
+
+                </div>
+
+            <!--</section>
+
+            <section class="section">-->
+            <br/>
+            <form action="#" th:action="@{/mobileView}" th:object="${searchItems}" method="get">
+                <div class="field has-addons has-addons-right">
+                    <p class="control">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input is-success" type="text" th:field="*{startYear}" placeholder="2017" value="">
+                            <span class="icon is-small is-left">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                        </div>
+                    </p>
+                    <p class="control">
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input is-success" type="text" th:field="*{endYear}" placeholder="2020" value="">
+                            <span class="icon is-small is-left">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                        </div>
+                    </p>
+                    <p class="control">
+                        <button class="button">
+                            Go
+                        </button>
+                    </p>
+                </div>
+            </form>
+            <!-- Body -->
+            </section>
+
+            <div class="card">
+                <progress class="progress is-success" th:value="${page.number+1}" th:attr="max=${page.totalPages}" >
+                    <span th:text="${page.number}">%</span>
+                </progress>
+            </div>
+
+            <div class="card" th:each="movie : ${page.content}">
+
+                <!--<div class="card-image">
+                    <figure class="image image is-1by1">
+                        <img th:src="${movie.imageUrl}" alt="Placeholder image">
+                    </figure>
+                </div>-->
+
+                <div class="card-content">
+
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img th:src="${movie.imageUrl}" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-5"><span th:text="${movie.title}" /></p>
+                            <p class="subtitle is-6">@<span th:text="${movie.releaseYear}" /></p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <strong><span th:text="${movie.title}" /></strong> is a <span th:text="${movie.language}" /> flim
+                        released in <span th:text="${movie.releaseYear}" />,
+                        written by <strong><span th:text="${movie.flimDirector}" /></strong>
+                        Starring <strong><span th:text="${movie.actorName}" /></strong> and
+                        <strong><span th:text="${movie.actressName}" /></strong>
+                        Music scored by <strong><span th:text="${movie.musicDirector}" /></strong>.
+                    </div>
+
+                </div>
 
 
+                <footer class="card-footer">
+                    <p class="card-footer-item">
+                      <span>
+                        <a th:href="@{/editMobileView(id=${movie.id})}">Edit</a>
+                      </span>
+                    </p>
+                    <p class="card-footer-item">
+                      <span>
+                        <a th:href="@{/deleteMobileView(id=${movie.id},page=${page.number},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}">Delete</a>
+                      </span>
+                    </p>
+                </footer>
 
-<!-- Footer Sections Goes Here -->
+            </div>
 
-	<footer class="footer">
-	  <div class="content has-text-centered">
-	    <p>
-	      <strong>Movie Database </strong> build by <a href="https://twitter.com/get4gopim">get4gopim@gmail.com</a>. Running on
-	      <a href="https://pivotal.io/">Pivotal Cloud</a>.
-	    </p>
-        <p>
-            <img src="https://bulma.io/images/made-with-bulma.png" alt="Made with Bulma" width="128" height="24">
-        </p>
-	  </div>
-	</footer>
-	
-  </body>
+            <!-- Pagination -->
+
+            <div class="card">
+                <progress class="progress is-success" th:value="${page.number+1}" th:attr="max=${page.totalPages}" >
+                    <span th:text="${page.number}">%</span>
+                </progress>
+
+                <nav class="pagination" role="navigation" aria-label="pagination">
+                    <a th:if="${page.hasPrevious()}"
+                       th:href="@{/mobileView(page=${page.number-1},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}"
+                       class="pagination-previous" title="Previous <<">Previous</a>
+
+                    <a th:if="${page.hasNext()}"
+                       th:href="@{/mobileView(page=${page.number+1},size=${page.size},startYear=${searchItems.startYear},endYear=${searchItems.endYear})}"
+                       class="pagination-next" title="Next >>">Next page</a>
+
+                </nav>
+            </div>
+
+        </div>
+
+        <!-- Footer Sections Goes Here -->
+
+        <footer class="footer">
+          <div class="content has-text-centered">
+            <p>
+              <strong>Movie Database </strong> build by <a href="https://twitter.com/get4gopim">get4gopim@gmail.com</a>. Running on
+              <a href="https://pivotal.io/">Pivotal Cloud</a>.
+            </p>
+            <p>
+                <img src="https://bulma.io/images/made-with-bulma.png" alt="Made with Bulma" width="128" height="24">
+            </p>
+          </div>
+        </footer>
+
+      </body>
 </html>

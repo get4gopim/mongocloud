@@ -2,6 +2,7 @@ package com.example.mongodemo.endpoint;
 
 import java.util.List;
 
+import com.example.mongodemo.service.ContributionNumberService;
 import com.example.mongodemo.service.ExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -32,6 +33,9 @@ public class MongoController {
 
 	@Autowired
 	private ExcelService excelService;
+
+	@Autowired
+	private ContributionNumberService contributionNumberService;
 
 	@GetMapping("/moviesAll")
 	public List<Movie> getAllMovies() {
@@ -74,6 +78,14 @@ public class MongoController {
 
 		excelService.readAndSaveAll(fileName);
 
+
+	}
+
+	@GetMapping("/contrib/extract")
+	@ResponseStatus(HttpStatus.OK)
+	public void contributionData(@RequestHeader(name = "X-Language", required = false, defaultValue = "Shipment Max Updated.xlsx") String fileName) {
+
+		contributionNumberService.readAndSaveAll(fileName);
 
 	}
 	

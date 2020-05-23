@@ -1,42 +1,42 @@
 package com.example.mongodemo.service;
 
-import com.example.mongodemo.model.BackerKitList;
-import com.example.mongodemo.model.BackerKitNumber;
-import com.example.mongodemo.model.HintGroup;
+import com.example.mongodemo.model.*;
 import com.example.mongodemo.repository.BackerKitNumberRepository;
+import com.example.mongodemo.repository.ContributionNumberRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.NumberUtils;
 
 import java.io.File;
 
 @Component
-public class ExcelService {
+public class ContributionNumberService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContributionNumberService.class);
 
     @Autowired
-    private BackerKitNumberRepository backerKitNumberRepository;
+    private ContributionNumberRepository contributionNumberRepository;
 
-    public static final String SAMPLE_XLSX_FILE_PATH = "C:\\Users\\GOPINATHAN\\Downloads\\Shipment Max Updated.xlsx";
+    public static final String SAMPLE_XLSX_FILE_PATH = "C:\\Users\\GOPINATHAN\\Downloads\\Shipment Max Updated (2).xlsx";
 
     public static void main(String... args) throws Exception {
-        ExcelService excelService = new ExcelService();
-        BackerKitList backerKitList = excelService.getBackersList("");
+        ContributionNumberService excelService = new ContributionNumberService();
+        ContributionNumberList backerKitList = excelService.getBackersList(SAMPLE_XLSX_FILE_PATH);
         System.out.println(backerKitList.getBackersList().size());
+
+        //excelService.readAndSaveAll(SAMPLE_XLSX_FILE_PATH);
     }
 
     public void readAndSaveAll(final String fileName) {
         try {
-            BackerKitList backerKitList = this.getBackersList(fileName);
+            ContributionNumberList backerKitList = this.getBackersList(SAMPLE_XLSX_FILE_PATH);
             System.out.println(backerKitList.getBackersList().size());
 
-            for (BackerKitNumber backerKitNumber : backerKitList.getBackersList()) {
+            for (ContributionNumber backerKitNumber : backerKitList.getBackersList()) {
                 try {
-                    backerKitNumberRepository.save(backerKitNumber);
+                    contributionNumberRepository.save(backerKitNumber);
                 } catch (Exception ex) {
                     LOGGER.error("readAndSaveAll Error", ex);
                 }
@@ -47,14 +47,14 @@ public class ExcelService {
     }
 
     public HintGroup getHints() {
-        long totalMovies = backerKitNumberRepository.count();
+        long totalMovies = contributionNumberRepository.count();
 
         return new HintGroup(totalMovies, 0, 0, 0);
     }
 
-    public BackerKitList getBackersList(final String fileName) throws Exception {
+    public ContributionNumberList getBackersList(final String fileName) throws Exception {
         // Creating a Workbook from an Excel file (.xls or .xlsx)
-        Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+        Workbook workbook = WorkbookFactory.create(new File(fileName));
 
         // Retrieving the number of sheets in the Workbook
         System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
@@ -81,16 +81,16 @@ public class ExcelService {
         DataFormatter dataFormatter = new DataFormatter();
 
         // 3. Or you can use Java 8 forEach loop with lambda
-        final BackerKitList backerKitList = new BackerKitList();
+        final ContributionNumberList backerKitList = new ContributionNumberList();
 
-        System.out.println("\n\nIterating over Rows and Columns using for-each loop\n");
+        System.out.println("\nIterating over Rows and Columns using for-each loop");
         for (Row row: sheet) {
             if (row.getRowNum() == 0) continue;
-            BackerKitNumber backerKitNumber = new BackerKitNumber();
+            ContributionNumber backerKitNumber = new ContributionNumber();
             for(Cell cell: row) {
                 String backerNumber = dataFormatter.formatCellValue(cell);
-                backerKitNumber.setBackerNumber(backerNumber);
-                //System.out.print(backerNumber + "\t");
+                backerKitNumber.setContributionNumber(backerNumber);
+                //System.out.println(backerNumber + "\t");
             }
             //System.out.println();
             backerKitList.getBackersList().add(backerKitNumber);

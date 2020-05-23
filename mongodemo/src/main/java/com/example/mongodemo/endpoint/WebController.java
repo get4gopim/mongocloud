@@ -1,10 +1,13 @@
 package com.example.mongodemo.endpoint;
 
 import com.example.mongodemo.model.BackerKitNumber;
+import com.example.mongodemo.model.ContributionNumber;
 import com.example.mongodemo.model.Movie;
 import com.example.mongodemo.model.SearchItems;
 import com.example.mongodemo.repository.BackerKitNumberRepository;
+import com.example.mongodemo.repository.ContributionNumberRepository;
 import com.example.mongodemo.repository.MovieRepository;
+import com.example.mongodemo.service.ContributionNumberService;
 import com.example.mongodemo.service.ExcelService;
 import com.example.mongodemo.service.MovieRepoService;
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +44,12 @@ public class WebController {
 
 	@Autowired
 	private BackerKitNumberRepository backerKitNumberRepository;
+
+    @Autowired
+    private ContributionNumberRepository contributionNumberRepository;
+
+	@Autowired
+	private ContributionNumberService contributionNumberService;
 
 	@Autowired
 	private ExcelService excelService;
@@ -231,6 +241,35 @@ public class WebController {
 			LOGGER.error("Exception in reading Excel", ex);
 		}
 		return "excel"; // view
+	}
+
+    @GetMapping("/contrib")
+    public String contribView(Model model, @PageableDefault(size = 300) Pageable pageable,
+                            @RequestParam(value = "title", defaultValue = "9927", required = false) String backerId) {
+        try {
+            Page<ContributionNumber> pages = contributionNumberRepository.findByContributionNumberStartsWith(backerId, pageable);
+
+            LOGGER.debug("Total Elements: {} - {}", pages.getTotalElements(), pages.getNumberOfElements());
+
+            model.addAttribute("page", pages);
+            model.addAttribute("searchItems", new SearchItems(backerId));
+            model.addAttribute("hints", contributionNumberService.getHints());
+        } catch (Exception ex) {
+            LOGGER.error("Exception in reading Excel", ex);
+        }
+        return "contrib"; // view
+    }
+
+	@GetMapping("/contrib/{backerNumber}")
+	public String showContribList(Model model, @PageableDefault(size = 500) Pageable pageable,
+								@PathVariable(value = "backerNumber", required = false) String contributionNumber) {
+
+		if (StringUtils.isEmpty(contributionNumber)) contributionNumber = "9927";
+
+		model.addAttribute("page", contributionNumberRepository.findByContributionNumberStartsWith(contributionNumber, pageable));
+		model.addAttribute("hints", contributionNumberService.getHints());
+
+		return "contrib_results :: resultsList";
 	}
 
 	@GetMapping("/excel/{backerNumber}")
