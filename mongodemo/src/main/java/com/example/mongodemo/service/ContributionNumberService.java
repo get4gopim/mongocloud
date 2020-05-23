@@ -31,7 +31,7 @@ public class ContributionNumberService {
 
     public void readAndSaveAll(final String fileName) {
         try {
-            ContributionNumberList backerKitList = this.getBackersList(SAMPLE_XLSX_FILE_PATH);
+            ContributionNumberList backerKitList = this.getBackersList(fileName);
             System.out.println(backerKitList.getBackersList().size());
 
             for (ContributionNumber backerKitNumber : backerKitList.getBackersList()) {
