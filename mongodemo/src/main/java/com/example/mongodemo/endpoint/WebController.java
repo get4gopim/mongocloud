@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -97,8 +98,10 @@ public class WebController {
 		}
 
 		LOGGER.info("Search by from: {} to: {}", startYear, endYear);
-		
-		List<Movie> movies = repository.getByReleaseYear(startYear, endYear, new Sort(Sort.Direction.DESC, "releaseYear"));
+
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		List<Movie> movies = repository.getByReleaseYear(startYear, endYear, sort);
 
 		model.addAttribute("movies", movies);
 
@@ -218,8 +221,9 @@ public class WebController {
 	
 	@GetMapping("/index")
 	public String indexView(Model model) {
-		
-		List<Movie> movies = repository.getByReleaseYear(2018, 2019, new Sort(Sort.Direction.DESC, "releaseYear"));
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		List<Movie> movies = repository.getByReleaseYear(2018, 2019, sort);
 
 		model.addAttribute("movies", movies);
 		
