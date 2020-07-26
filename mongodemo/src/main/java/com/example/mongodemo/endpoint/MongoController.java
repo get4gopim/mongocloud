@@ -45,7 +45,9 @@ public class MongoController {
 	@GetMapping("/movies")
 	public List<Movie> getAllMovies(@RequestHeader(name = "X-Start-Year", required = false, defaultValue = "2019") int startYear, 
 			@RequestHeader(name = "X-End-Year", required = false, defaultValue = "2019") int endYear) {
-		return repository.getByReleaseYear(startYear, endYear, new Sort(Sort.Direction.DESC, "releaseYear"));
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		return repository.getByReleaseYear(startYear, endYear, sort);
 	}
 	
 	@GetMapping("/edit")

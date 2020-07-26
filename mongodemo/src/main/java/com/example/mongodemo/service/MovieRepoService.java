@@ -11,6 +11,9 @@ import com.example.mongodemo.model.HintGroup;
 import com.example.mongodemo.model.Movie;
 import com.example.mongodemo.repository.MovieRepository;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class MovieRepoService {
 	
@@ -18,7 +21,9 @@ public class MovieRepoService {
 	private MovieRepository movieRepository;
 	
 	public Page<Movie> findAllPages(int startYear, int endYear, int currentPage, int size) {
-		Pageable pageable = PageRequest.of(currentPage, size, new Sort(Sort.Direction.DESC, "releaseYear"));
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		Pageable pageable = PageRequest.of(currentPage, size, sort);
 		
 		Page<Movie> pages = movieRepository.getByReleaseYearPagable(startYear, endYear, pageable);
 		
@@ -26,7 +31,9 @@ public class MovieRepoService {
 	}
 	
 	public Page<Movie> findAllPages(int startYear, int endYear, Pageable pageable) {
-		Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), new Sort(Sort.Direction.DESC, "releaseYear"));
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 		
 		Page<Movie> pages = movieRepository.getByReleaseYearPagable(startYear, endYear, pageable1);
 
@@ -34,7 +41,9 @@ public class MovieRepoService {
 	}
 	
 	public Page<Movie> findByTitleLike(String title, Pageable pageable) {
-		Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), new Sort(Sort.Direction.DESC, "releaseYear"));
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 		
 		Page<Movie> pages = movieRepository.findByTitleLike(title, pageable1);
 
