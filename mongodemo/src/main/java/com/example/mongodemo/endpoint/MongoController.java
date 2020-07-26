@@ -2,9 +2,11 @@ package com.example.mongodemo.endpoint;
 
 import java.util.List;
 
+import com.example.mongodemo.repository.MovieNonBlockingRepository;
 import com.example.mongodemo.service.ContributionNumberService;
 import com.example.mongodemo.service.ExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.mongodemo.model.Movie;
 import com.example.mongodemo.repository.MovieRepository;
 import com.example.mongodemo.service.MovieService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/demo")
 public class MongoController {
 	
 	@Autowired
-	private MovieRepository repository;
+	private MovieNonBlockingRepository repository;
+
+	@Autowired
+	private MovieRepository movieRepository;
 	
 	@Autowired
 	private MovieService service;
@@ -38,20 +45,36 @@ public class MongoController {
 	private ContributionNumberService contributionNumberService;
 
 	@GetMapping("/moviesAll")
-	public List<Movie> getAllMovies() {
+	public Flux<Movie> getAllMovies() {
 		return repository.findAll();
 	}
-	
+
 	@GetMapping("/movies")
-	public List<Movie> getAllMovies(@RequestHeader(name = "X-Start-Year", required = false, defaultValue = "2019") int startYear, 
-			@RequestHeader(name = "X-End-Year", required = false, defaultValue = "2019") int endYear) {
+	public Flux<Movie> getAllMovies(@RequestHeader(name = "X-Start-Year", required = false, defaultValue = "2019") int startYear,
+									@RequestHeader(name = "X-End-Year", required = false, defaultValue = "2019") int endYear) {
 		String[] properties = { "releaseYear" };
 		Sort sort = Sort.by(Sort.Direction.DESC, properties);
 		return repository.getByReleaseYear(startYear, endYear, sort);
 	}
+
+	@GetMapping("/movies/blocking")
+	public List<Movie> getAllMoviesBlocking(@RequestHeader(name = "X-Start-Year", required = false, defaultValue = "2019") int startYear,
+									@RequestHeader(name = "X-End-Year", required = false, defaultValue = "2019") int endYear) {
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		return movieRepository.getByReleaseYear(startYear, endYear, sort);
+	}
+
+	/*@GetMapping("/movies")
+	public List<Movie> getAllMovies(@RequestHeader(name = "X-Start-Year", required = false, defaultValue = "2019") int startYear,
+			@RequestHeader(name = "X-End-Year", required = false, defaultValue = "2019") int endYear) {
+		String[] properties = { "releaseYear" };
+		Sort sort = Sort.by(Sort.Direction.DESC, properties);
+		return repository.getByReleaseYear(startYear, endYear, sort);
+	}*/
 	
 	@GetMapping("/edit")
-	public Movie findOne(@RequestParam("id") String id) {
+	public Mono<Movie> findOne(@RequestParam("id") String id) {
 		return repository.findByMovieId(id);
 	}
 	
@@ -61,7 +84,7 @@ public class MongoController {
 	}
 	
 	@PostMapping("/movies")
-	public Movie addMovie(@RequestBody Movie movie) {
+	public Mono<Movie> addMovie(@RequestBody Movie movie) {
 		return repository.save(movie);
 	}
 	
